@@ -62,7 +62,7 @@ jobs:
         run: |
           TAG=${{ steps.bump.outputs.new_version }}
           git tag $TAG
-          git push origin main --tags
+          git push origin HEAD --tags
 
       # 10. Create GitHub release
       - name: Create GitHub Release
