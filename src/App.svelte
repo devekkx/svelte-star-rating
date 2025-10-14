@@ -1,5 +1,5 @@
 <script lang="ts">
-    import StarRating from "./lib/star-rating.svelte";
+    import StarRating from "./lib/components/star-rating.svelte";
     import type {ConfigI} from "./lib/types";
 
     const config = $state<ConfigI>({

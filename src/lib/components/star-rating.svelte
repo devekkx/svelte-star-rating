@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {ConfigI} from "./types";
+    import type {ConfigI} from "../types";
     import Star from "./star.svelte";
 
     let {config, value = $bindable(4.54)}: { config: ConfigI, value: number } = $props();

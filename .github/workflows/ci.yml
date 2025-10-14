@@ -1,0 +1,56 @@
+name: Version & Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Setup Bun
+      - name: Setup Bun
+        uses: oven-sh/bun@v0.8.10
+
+      - name: Install dependencies
+        run: bun install
+
+      # Optional: run tests first
+      - name: Run tests
+        run: bun run test
+
+      # Bump version
+      - name: Bump version
+        id: bump
+        run: |
+          # Choose patch, minor, or major as needed
+          npm version patch --no-git-tag-version
+
+      # Commit version bump
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore: bump version to $(node -p \"require('./package.json').version\")"
+
+      # Create git tag
+      - name: Create tag
+        run: |
+          TAG=$(node -p "require('./package.json').version")
+          git tag v$TAG
+          git push origin main --tags
+
+      # Create GitHub release
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.bump.outputs.new_version }}
+          name: Release v${{ steps.bump.outputs.new_version }}
+          body: "Automated release from workflow"

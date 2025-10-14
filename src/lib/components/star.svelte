@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {StarConfigI} from "./types";
+    import type {StarConfigI} from "../types";
 
     let {id, readonly, fillPercent, starConfig}: {
         id: number
