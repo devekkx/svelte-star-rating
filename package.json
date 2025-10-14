@@ -1,5 +1,5 @@
 {
-  "name": "svelte-star-rating",
+  "name": "@dev-ekkx/svelte-star-rating",
   "description": "Simple star rating component for Svelte",
   "author": "Dev Ekkx <devekkx@gmail.com>",
   "version": "1.1.0",
