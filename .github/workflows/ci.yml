@@ -46,6 +46,7 @@ jobs:
       # 7. Bump version (patch by default)
       - name: Bump version
         id: bump
+        if: "!contains(github.actor, 'github-actions[bot]')"
         run: |
           NEW_VERSION=$(npm version patch --no-git-tag-version)
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
@@ -61,15 +62,25 @@ jobs:
           title: "Version bump to ${{ steps.bump.outputs.new_version }}"
           body: "Automated version bump to ${{ steps.bump.outputs.new_version }}"
 
-      # 9. Create git tag (tags can be pushed even if main is protected)
+      # 9. Create git tag
       - name: Create git tag
+        if: "!contains(github.actor, 'github-actions[bot]')"
         run: |
           TAG=${{ steps.bump.outputs.new_version }}
           git tag $TAG
+          git push origin main
           git push origin refs/tags/$TAG
 
-      # 10. Create GitHub release
+      # 10. Publish to npm
+      - name: Publish to npm
+        if: "!contains(github.actor, 'github-actions[bot]')"
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          npm publish --access public
+
+      # 11. Create GitHub Release
       - name: Create GitHub Release
+        if: "!contains(github.actor, 'github-actions[bot]')"
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.bump.outputs.new_version }}
