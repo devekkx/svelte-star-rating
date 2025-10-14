@@ -189,3 +189,7 @@ Because the component uses inline SVG, colors apply directly and do not require 
   ```
 - Requires Svelte 5 (uses $bindable/$state in the demo and bind:value in the component).
 - Works in SSR environments as it is purely presentational and eventless, but interaction (range input) is client-only.
+
+## License
+
+MIT License © 2025 Dev Ekkx. See LICENSE file for details.

@@ -3,6 +3,7 @@
   "description": "Simple star rating component for Svelte",
   "author": "Dev Ekkx <devekkx@gmail.com>",
   "version": "1.0.0",
+  "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "svelte": "dist/index.js",
