@@ -35,10 +35,11 @@ jobs:
         run: bun run build
 
       # 6. Configure git for committing version bump
-      - name: Configure git
+      - name: Configure git for push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
       # 7. Bump version (patch by default)
       - name: Bump version
