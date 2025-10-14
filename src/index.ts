@@ -1,0 +1,1 @@
+export {default as StarRating} from './lib/components/star-rating.svelte';

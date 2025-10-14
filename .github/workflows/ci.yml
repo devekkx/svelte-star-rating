@@ -1,0 +1,77 @@
+name: Package versioning and release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repo
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # 2. Set up Bun
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "latest"
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: bun install
+
+      # 4. Run tests
+      #      - name: Run tests
+      #        run: bun run test
+
+      # 5. Build library
+      - name: Build library
+        run: bun run build
+
+      # 6. Configure git for push
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 7. Bump version (patch by default)
+      - name: Bump version
+        id: bump
+        run: |
+          NEW_VERSION=$(npm version patch --no-git-tag-version)
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      # 8. Push version bump to a temporary branch and create PR
+      - name: Push version bump branch
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump version to ${{ steps.bump.outputs.new_version }}"
+          branch: version-bump-${{ steps.bump.outputs.new_version }}
+          base: main
+          title: "Version bump to ${{ steps.bump.outputs.new_version }}"
+          body: "Automated version bump to ${{ steps.bump.outputs.new_version }}"
+
+      # 9. Create git tag (tags can be pushed even if main is protected)
+      - name: Create git tag
+        run: |
+          TAG=${{ steps.bump.outputs.new_version }}
+          git tag $TAG
+          git push origin refs/tags/$TAG
+
+      # 10. Create GitHub release
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.bump.outputs.new_version }}
+          name: Release ${{ steps.bump.outputs.new_version }}
+          body: "Automated release from workflow"
