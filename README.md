@@ -27,13 +27,12 @@ Peer dependency:
 ```svelte
 <script lang="ts">
   import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  import type { ConfigI } from '@dev-ekkx/svelte-star-rating/dist/lib/types';
 
   // Current rating value (number). You can bind and update it.
   let value = 4.4;
 
   // Component config
-  const config: ConfigI = {
+  const config = {
     readonly: false,
     maxVal: 5,
     minVal: 0,
@@ -162,6 +161,8 @@ Because the component uses inline SVG, colors apply directly and do not require 
 
 <StarRating bind:value {config} />
 ```
+
+[//]: # ()
 
 [//]: # (## Development)
 
