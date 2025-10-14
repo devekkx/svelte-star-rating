@@ -2,7 +2,7 @@
   "name": "@dev-ekkx/svelte-star-rating",
   "description": "Simple star rating component for Svelte",
   "author": "Dev Ekkx <devekkx@gmail.com>",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
