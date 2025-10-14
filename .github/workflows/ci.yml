@@ -16,6 +16,7 @@ jobs:
       # 1. Checkout repo
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       # 2. Set up Bun
