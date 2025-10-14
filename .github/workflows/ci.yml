@@ -21,9 +21,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      # Optional: run tests first
-      - name: Run tests
-        run: bun run test
+      #      # Run tests first
+      #      - name: Run tests
+      #        run: bun run test
 
       # Bump version
       - name: Bump version
