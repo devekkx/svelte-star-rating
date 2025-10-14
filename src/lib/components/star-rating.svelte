@@ -1,37 +1,48 @@
 <script lang="ts">
-    import type {ConfigI} from "../types.js";
-    import Star from "./star.svelte";
+    import type {ConfigI} from '../types.js';
+    import Star from './star.svelte';
 
-    let {config, value = $bindable(4.54)}: { config: ConfigI, value: number } = $props();
-
-
+    let {config, value = $bindable(4.54)}: { config: ConfigI; value: number } = $props();
 </script>
-<section class="stars-container">
+
+<section class="stars-container" style={config?.styles?.containerStyles ?? ''}>
     <div class="range-stars">
-        <div class="stars">
+        <div class="stars" style={config?.styles?.starStyles ?? ''}>
             {#each Array(config.numOfStars) as _, idx}
                 {#if Math.floor(value) === idx}
-                    <Star id={idx} readonly={config.readonly} starConfig={config.starConfig}
-                          fillPercent={value - Math.floor(value)}/>
-                {:else if (value) > idx}
-                    <Star id={idx} readonly={config.readonly} starConfig={config.starConfig}
-                          fillPercent={1}/>
+                    <Star
+                            id={idx}
+                            readonly={config.readonly}
+                            starConfig={config.starConfig}
+                            fillPercent={value - Math.floor(value)}
+                    />
+                {:else if value > idx}
+                    <Star
+                            id={idx}
+                            readonly={config.readonly}
+                            starConfig={config.starConfig}
+                            fillPercent={1}
+                    />
                 {:else}
-                    <Star id={idx} readonly={config.readonly} starConfig={config.starConfig}
-                          fillPercent={0}/>
+                    <Star
+                            id={idx}
+                            readonly={config.readonly}
+                            starConfig={config.starConfig}
+                            fillPercent={0}
+                    />
                 {/if}
             {/each}
         </div>
 
         <!--Star trigger-->
-        <input bind:value={value}
-               class="slider"
-               max={config.readonly ? value : config.maxVal}
-               min={config.readonly ? value : config.minVal}
-               step={config.step}
-               type="range"
-        >
-
+        <input
+                bind:value
+                class="slider"
+                max={config.readonly ? value : config.maxVal}
+                min={config.readonly ? value : config.minVal}
+                step={config.step}
+                type="range"
+        />
     </div>
 </section>
 
@@ -41,7 +52,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: .5rem;
+        gap: 0.5rem;
     }
 
     .range-stars {
@@ -52,7 +63,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: .5rem;
+        gap: 0.5rem;
     }
 
     .slider {

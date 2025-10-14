@@ -22,47 +22,47 @@ Peer dependency:
 
 ## Quick start
 
-1) Import the component
+1. Import the component
 
 ```svelte
 <script lang="ts">
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
+	import { StarRating } from '@dev-ekkx/svelte-star-rating';
 
-  // Current rating value (number). You can bind and update it.
-  let value = 4.4;
+	// Current rating value (number). You can bind and update it.
+	let value = 4.4;
 
-  // Component config
-  const config = {
-    readonly: false,
-    maxVal: 5,
-    minVal: 0,
-    step: 0.1, // allows tenth-star granularity
-    numOfStars: 5,
-    starConfig: {
-      size: 26, // pixels
-      filledColor: '#F98416',
-      unfilledColor: '#5D5D5D'
-    }
-  };
+	// Component config
+	const config = {
+		readonly: false,
+		maxVal: 5,
+		minVal: 0,
+		step: 0.1, // allows tenth-star granularity
+		numOfStars: 5,
+		starConfig: {
+			size: 26, // pixels
+			filledColor: '#F98416',
+			unfilledColor: '#5D5D5D'
+		}
+	};
 </script>
 
 <StarRating bind:value {config} />
 ```
 
-2) Read-only display
+2. Read-only display
 
 ```svelte
 <script lang="ts">
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  let value = 3.7;
-  const config = {
-    readonly: true,
-    minVal: 0,
-    maxVal: 5,
-    step: 0.1,
-    numOfStars: 5,
-    starConfig: { size: 20, filledColor: '#ffc107', unfilledColor: '#e0e0e0' }
-  };
+	import { StarRating } from '@dev-ekkx/svelte-star-rating';
+	let value = 3.7;
+	const config = {
+		readonly: true,
+		minVal: 0,
+		maxVal: 5,
+		step: 0.1,
+		numOfStars: 5,
+		starConfig: { size: 20, filledColor: '#ffc107', unfilledColor: '#e0e0e0' }
+	};
 </script>
 
 <StarRating {config} bind:value />
@@ -75,26 +75,26 @@ Note: when readonly is true, the slider is disabled and the current value is pre
 Component: StarRating
 
 - Props
-    - config: ConfigI (required)
-    - bind:value: number (optional; default 4.54 inside component). If you bind to a variable, it becomes a controlled
-      component and updates as the user interacts.
+  - config: ConfigI (required)
+  - bind:value: number (optional; default 4.54 inside component). If you bind to a variable, it becomes a controlled
+    component and updates as the user interacts.
 
 Types:
 
 ```ts
 export interface StarConfigI {
-    size: number;
-    filledColor: string;
-    unfilledColor: string;
+	size: number;
+	filledColor: string;
+	unfilledColor: string;
 }
 
 export interface ConfigI {
-    readonly: boolean;
-    numOfStars: number;
-    minVal: number;
-    maxVal: number;
-    step: number;
-    starConfig: StarConfigI;
+	readonly: boolean;
+	numOfStars: number;
+	minVal: number;
+	maxVal: number;
+	step: number;
+	starConfig: StarConfigI;
 }
 ```
 
@@ -127,60 +127,50 @@ Because the component uses inline SVG, colors apply directly and do not require 
 
 ```svelte
 <script>
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  let value = 0;
-  const config = {
-    readonly: false,
-    minVal: 0,
-    maxVal: 5,
-    step: 1,
-    numOfStars: 5,
-    starConfig: { size: 32, filledColor: 'gold', unfilledColor: '#ccc' }
-  };
+	import { StarRating } from '@dev-ekkx/svelte-star-rating';
+	let value = 0;
+	const config = {
+		readonly: false,
+		minVal: 0,
+		maxVal: 5,
+		step: 1,
+		numOfStars: 5,
+		starConfig: { size: 32, filledColor: 'gold', unfilledColor: '#ccc' }
+	};
 </script>
 
-<StarRating bind:value {config} />
-<p>Your rating: {value}</p>
+<StarRating bind:value {config} /><p>Your rating: {value}</p>
 ```
 
 - Ten stars, quarter steps:
 
 ```svelte
 <script>
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  let value = 7.5;
-  const config = {
-    readonly: false,
-    minVal: 0,
-    maxVal: 10,
-    step: 0.25,
-    numOfStars: 10,
-    starConfig: { size: 18, filledColor: '#4f46e5', unfilledColor: '#e5e7eb' }
-  };
+	import { StarRating } from '@dev-ekkx/svelte-star-rating';
+	let value = 7.5;
+	const config = {
+		readonly: false,
+		minVal: 0,
+		maxVal: 10,
+		step: 0.25,
+		numOfStars: 10,
+		starConfig: { size: 18, filledColor: '#4f46e5', unfilledColor: '#e5e7eb' }
+	};
 </script>
 
 <StarRating bind:value {config} />
 ```
 
-[//]: # ()
-
-[//]: # (## Development)
-
-[//]: # ()
-
-[//]: # (Run the demo app locally:)
-
-[//]: # (- Dev server: `npm run dev`)
-
-[//]: # (- Type-check: `npm run check`)
-
-[//]: # (- Build library + types: `npm run build`)
-
-[//]: # (- Preview build: `npm run preview`)
-
-[//]: # ()
-
-[//]: # (The distributable files are emitted to dist/.)
+[//]: #
+[//]: # '## Development'
+[//]: #
+[//]: # 'Run the demo app locally:'
+[//]: # '- Dev server: `npm run dev`'
+[//]: # '- Type-check: `npm run check`'
+[//]: # '- Build library + types: `npm run build`'
+[//]: # '- Preview build: `npm run preview`'
+[//]: #
+[//]: # 'The distributable files are emitted to dist/.'
 
 ## Notes
 
