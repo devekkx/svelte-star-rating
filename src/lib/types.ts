@@ -10,6 +10,7 @@ export interface StarConfigI {
 }
 
 export interface ConfigI {
+    name?: string
     readonly: boolean;
     numOfStars: number;
     minVal: number;

@@ -5,7 +5,7 @@
     let {config, value = $bindable(4.54)}: { config: ConfigI; value: number } = $props();
 </script>
 
-<section class="stars-container" style={config?.styles?.containerStyles ?? ''}>
+<section class="container" style={config?.styles?.containerStyles ?? ''}>
     <div class="range-stars">
         <div class="stars" style={config?.styles?.starStyles ?? ''}>
             {#each Array(config.numOfStars) as _, idx}
@@ -40,6 +40,7 @@
                 class="slider"
                 max={config.readonly ? value : config.maxVal}
                 min={config.readonly ? value : config.minVal}
+                name={config.name ?? 'stars'}
                 step={config.step}
                 type="range"
         />
@@ -47,7 +48,7 @@
 </section>
 
 <style>
-    .stars-container {
+    .container {
         position: relative;
         display: flex;
         align-items: center;

@@ -18,7 +18,7 @@ Using your preferred package manager:
 
 Peer dependency:
 
-- svelte ^5.39.6
+- svelte ^5.0.0
 
 ## Quick start
 
@@ -75,26 +75,37 @@ Note: when readonly is true, the slider is disabled and the current value is pre
 Component: StarRating
 
 - Props
-  - config: ConfigI (required)
-  - bind:value: number (optional; default 4.54 inside component). If you bind to a variable, it becomes a controlled
-    component and updates as the user interacts.
+    - config: ConfigI (required)
+    - bind:value: number (optional; default 4.54 inside component). If you bind to a variable, it becomes a controlled
+      component and updates as the user interacts.
 
 Types:
 
 ```ts
+export interface StylesI {
+    /** Inline CSS applied to the outer stars container */
+    containerStyles?: string;
+    /** Inline CSS applied to the stars row wrapper */
+    starStyles?: string;
+}
+
 export interface StarConfigI {
-	size: number;
-	filledColor: string;
-	unfilledColor: string;
+    size: number;
+    filledColor: string;
+    unfilledColor: string;
 }
 
 export interface ConfigI {
-	readonly: boolean;
-	numOfStars: number;
-	minVal: number;
-	maxVal: number;
-	step: number;
-	starConfig: StarConfigI;
+    /** Optional name for the underlying input element; defaults to 'stars' */
+    name?: string;
+    readonly: boolean;
+    numOfStars: number;
+    minVal: number;
+    maxVal: number;
+    step: number;
+    starConfig: StarConfigI;
+    /** Optional inline styles for container and stars row */
+    styles?: StylesI;
 }
 ```
 
@@ -120,6 +131,43 @@ Use starConfig to control visuals per instance:
 - unfilledColor: color for the unfilled portion
 
 Because the component uses inline SVG, colors apply directly and do not require external CSS.
+
+Optional styles object (inline CSS strings):
+
+- styles.containerStyles: Applied to the outer section wrapper of the component. Useful for
+  margins, borders, padding, background, overall gap, width, alignment, etc.
+- styles.starStyles: Applied to the row that holds the stars. Useful for controlling spacing between stars (
+  gap), alignment, transforms, etc.
+
+Example:
+
+```svelte
+<script>
+  import { StarRating } from '@dev-ekkx/svelte-star-rating';
+    
+  let value = $state(4.4);
+  const config = $state<ConfigI>({
+        name: 'stars',
+        readonly: false,
+        maxVal: 5,
+        minVal: 0,
+        step: 0.1,
+        numOfStars: 5,
+        styles: {
+            containerStyles: "border: 1px solid red; padding: 8px; border-radius: 8px; width:max-content; gap:0rem; margin-inline: auto",
+            starStyles: "gap: 0.1rem"
+        },
+        starConfig: {
+            size: 26,
+            filledColor: '#F98416',
+            unfilledColor: '#5D5D5D'
+        }
+    });
+
+</script>
+
+<StarRating bind:value {config} />
+```
 
 ## Examples
 
@@ -161,17 +209,6 @@ Because the component uses inline SVG, colors apply directly and do not require 
 <StarRating bind:value {config} />
 ```
 
-[//]: #
-[//]: # '## Development'
-[//]: #
-[//]: # 'Run the demo app locally:'
-[//]: # '- Dev server: `npm run dev`'
-[//]: # '- Type-check: `npm run check`'
-[//]: # '- Build library + types: `npm run build`'
-[//]: # '- Preview build: `npm run preview`'
-[//]: #
-[//]: # 'The distributable files are emitted to dist/.'
-
 ## Notes
 
 - This package uses named export:
@@ -183,4 +220,4 @@ Because the component uses inline SVG, colors apply directly and do not require 
 
 ## License
 
-MIT License © 2025 Dev Ekkx. See LICENSE file for details.
+MIT License © 2025 Emmanuel Komla Kpendo (Dev Ekkx). See LICENSE file for details.
