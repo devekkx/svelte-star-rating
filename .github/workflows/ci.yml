@@ -1,4 +1,4 @@
-name: Version & Release
+name: CI / Build / Release
 
 on:
   push:
@@ -9,50 +9,62 @@ on:
       - main
 
 jobs:
-  version:
+  build-test-release:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      # Setup Bun
+    steps:
+      # 1. Checkout repo
+      - uses: actions/checkout@v4
+
+      # 2. Set up Bun
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: "latest"
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: bun install
 
-      #      # Run tests first
-      #      - name: Run tests
-      #        run: bun run test
+      # 4. Run tests
+      - name: Run tests
+        run: bun run test
 
-      # Bump version
-      - name: Bump version
-        id: bump
-        run: |
-          # Choose patch, minor, or major as needed
-          npm version patch --no-git-tag-version
+      # 5. Build library
+      - name: Build library
+        run: bun run build
 
-      # Commit version bump
-      - name: Commit version bump
+      # 6. Configure git for committing version bump
+      - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json
-          git commit -m "chore: bump version to $(node -p \"require('./package.json').version\")"
 
-      # Create git tag
-      - name: Create tag
+      # 7. Bump version (patch by default)
+      - name: Bump version
+        id: bump
         run: |
-          TAG=$(node -p "require('./package.json').version")
-          git tag v$TAG
+          # Change 'patch' to 'minor' or 'major' if needed
+          NEW_VERSION=$(npm version patch --no-git-tag-version)
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      # 8. Commit version bump
+      - name: Commit version bump
+        run: |
+          git add package.json
+          git commit -m "chore: bump version to ${{ steps.bump.outputs.new_version }}"
+
+      # 9. Create git tag
+      - name: Create git tag
+        run: |
+          TAG=${{ steps.bump.outputs.new_version }}
+          git tag $TAG
           git push origin main --tags
 
-      # Create GitHub release
+      # 10. Create GitHub release
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ steps.bump.outputs.new_version }}
-          name: Release v${{ steps.bump.outputs.new_version }}
+          tag: ${{ steps.bump.outputs.new_version }}
+          name: Release ${{ steps.bump.outputs.new_version }}
           body: "Automated release from workflow"
