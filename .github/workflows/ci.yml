@@ -1,4 +1,4 @@
-name: Package versioning and release
+name: CI Checks
 
 on:
   push:
@@ -9,80 +9,22 @@ on:
       - main
 
 jobs:
-  build-test-release:
+  build-and-check:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Checkout repo
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      # 2. Set up Bun
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: "latest"
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: bun install
 
-      # 4. Run tests
-      #      - name: Run tests
-      #        run: bun run test
+      - name: Run svelte-check
+        run: bun run check
 
-      # 5. Build library
       - name: Build library
         run: bun run build
-
-      # 6. Configure git for push
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      # 7. Bump version (patch by default)
-      - name: Bump version
-        id: bump
-        if: "!contains(github.actor, 'github-actions[bot]')"
-        run: |
-          NEW_VERSION=$(npm version patch --no-git-tag-version)
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-      # 8. Push version bump to a temporary branch and create PR
-      - name: Push version bump branch
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: bump version to ${{ steps.bump.outputs.new_version }}"
-          branch: version-bump-${{ steps.bump.outputs.new_version }}
-          base: main
-          title: "Version bump to ${{ steps.bump.outputs.new_version }}"
-          body: "Automated version bump to ${{ steps.bump.outputs.new_version }}"
-
-      # 9. Create git tag
-      - name: Create git tag
-        if: "!contains(github.actor, 'github-actions[bot]')"
-        run: |
-          TAG=${{ steps.bump.outputs.new_version }}
-          git tag $TAG
-          git push origin main
-          git push origin refs/tags/$TAG
-
-      # 10. Publish to npm
-      - name: Publish to npm
-        if: "!contains(github.actor, 'github-actions[bot]')"
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          npm publish --access public
-
-      # 11. Create GitHub Release
-      - name: Create GitHub Release
-        if: "!contains(github.actor, 'github-actions[bot]')"
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.bump.outputs.new_version }}
-          name: Release ${{ steps.bump.outputs.new_version }}
-          body: "Automated release from workflow"
