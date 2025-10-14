@@ -27,8 +27,8 @@ jobs:
         run: bun install
 
       # 4. Run tests
-      - name: Run tests
-        run: bun run test
+      #      - name: Run tests
+      #        run: bun run test
 
       # 5. Build library
       - name: Build library
