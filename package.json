@@ -2,7 +2,7 @@
   "name": "svelte-star-rating",
   "description": "Simple star rating component for Svelte",
   "author": "Dev Ekkx <devekkx@gmail.com>",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "scripts": {
     "dev": "vite dev",
