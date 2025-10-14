@@ -1,41 +1,68 @@
 {
-  "name": "@dev-ekkx/svelte-star-rating",
-  "description": "Simple star rating component for Svelte",
-  "author": "Dev Ekkx <devekkx@gmail.com>",
+  "name": "svelte-star-rating",
   "version": "1.0.3",
   "license": "MIT",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && npm run prepack",
+    "preview": "vite preview",
+    "prepare": "svelte-kit sync || echo ''",
+    "prepack": "svelte-kit sync && svelte-package && publint",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
+    "test:unit": "vitest",
+    "test": "npm run test:unit -- --run"
+  },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
   ],
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
-  "svelte": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "svelte": "./dist/index.es.js",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
+      "svelte": "./dist/index.js"
     }
   },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build && tsc -p tsconfig.types.json",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json"
-  },
   "peerDependencies": {
-    "svelte": "^5.39.6"
+    "svelte": "^5.0.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.2.1",
-    "@tsconfig/svelte": "^5.0.5",
-    "@types/node": "^24.6.0",
-    "svelte": "^5.39.6",
+    "@eslint/compat": "^1.4.0",
+    "@eslint/js": "^9.36.0",
+    "@sveltejs/adapter-auto": "^6.1.0",
+    "@sveltejs/kit": "^2.43.2",
+    "@sveltejs/package": "^2.5.4",
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@types/node": "^22",
+    "@vitest/browser": "^3.2.4",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.12.4",
+    "globals": "^16.4.0",
+    "playwright": "^1.55.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-svelte": "^3.4.0",
+    "publint": "^0.3.13",
+    "svelte": "^5.39.5",
     "svelte-check": "^4.3.2",
-    "typescript": "~5.9.3",
-    "vite": "^7.1.7"
-  }
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.1",
+    "vite": "^7.1.7",
+    "vitest": "^3.2.4",
+    "vitest-browser-svelte": "^1.1.0"
+  },
+  "keywords": [
+    "svelte",
+    "star",
+    "rating"
+  ]
 }

@@ -1,196 +1,58 @@
-# Svelte Star Rating
+# Svelte library
 
-Simple, zero-dependency star rating component for Svelte.
+Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
 
-- Tiny and framework-native (Svelte 5)
-- Fully controlled with bind:value
-- Half/partial star fill supported (any step you want)
-- Customizable size and colors
-- Optional readonly mode
+Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
 
-## Installation
+## Creating a project
 
-Using your preferred package manager:
+If you're seeing this, you've probably already done this step. Congrats!
 
-- npm: `npm i @dev-ekkx/svelte-star-rating`
-- pnpm: `pnpm add @dev-ekkx/svelte-star-rating`
-- bun: `bun add @dev-ekkx/svelte-star-rating`
+```sh
+# create a new project in the current directory
+npx sv create
 
-Peer dependency:
-
-- svelte ^5.39.6
-
-## Quick start
-
-1) Import the component
-
-```svelte
-<script lang="ts">
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-
-  // Current rating value (number). You can bind and update it.
-  let value = 4.4;
-
-  // Component config
-  const config = {
-    readonly: false,
-    maxVal: 5,
-    minVal: 0,
-    step: 0.1, // allows tenth-star granularity
-    numOfStars: 5,
-    starConfig: {
-      size: 26, // pixels
-      filledColor: '#F98416',
-      unfilledColor: '#5D5D5D'
-    }
-  };
-</script>
-
-<StarRating bind:value {config} />
+# create a new project in my-app
+npx sv create my-app
 ```
 
-2) Read-only display
+## Developing
 
-```svelte
-<script lang="ts">
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  let value = 3.7;
-  const config = {
-    readonly: true,
-    minVal: 0,
-    maxVal: 5,
-    step: 0.1,
-    numOfStars: 5,
-    starConfig: { size: 20, filledColor: '#ffc107', unfilledColor: '#e0e0e0' }
-  };
-</script>
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-<StarRating {config} bind:value />
+```sh
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-Note: when readonly is true, the slider is disabled and the current value is preserved.
+Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
 
-## API
+## Building
 
-Component: StarRating
+To build your library:
 
-- Props
-    - config: ConfigI (required)
-    - bind:value: number (optional; default 4.54 inside component). If you bind to a variable, it becomes a controlled
-      component and updates as the user interacts.
-
-Types:
-
-```ts
-export interface StarConfigI {
-    size: number;
-    filledColor: string;
-    unfilledColor: string;
-}
-
-export interface ConfigI {
-    readonly: boolean;
-    numOfStars: number;
-    minVal: number;
-    maxVal: number;
-    step: number;
-    starConfig: StarConfigI;
-}
+```sh
+npm pack
 ```
 
-Behavior notes:
+To create a production version of your showcase app:
 
-- The component renders numOfStars SVG stars.
-- value may be fractional. Stars will be fully filled for indices below floor(value), and the next star will be
-  partially filled to match the fraction. Remaining stars are unfilled.
-- The HTML input[type="range"] is visually hidden but handles keyboard/mouse/touch interaction when readonly is false.
-- The slider range is clamped to [minVal, maxVal] with the provided step.
-
-Accessibility:
-
-- The interactive slider is focusable and operable via keyboard when readonly is false.
-- Consider adding surrounding labels or aria attributes in your app if needed.
-
-## Styling and customization
-
-Use starConfig to control visuals per instance:
-
-- size: pixel size of each star SVG
-- filledColor: color for the filled portion
-- unfilledColor: color for the unfilled portion
-
-Because the component uses inline SVG, colors apply directly and do not require external CSS.
-
-## Examples
-
-- Five stars, integer steps only:
-
-```svelte
-<script>
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  let value = 0;
-  const config = {
-    readonly: false,
-    minVal: 0,
-    maxVal: 5,
-    step: 1,
-    numOfStars: 5,
-    starConfig: { size: 32, filledColor: 'gold', unfilledColor: '#ccc' }
-  };
-</script>
-
-<StarRating bind:value {config} />
-<p>Your rating: {value}</p>
+```sh
+npm run build
 ```
 
-- Ten stars, quarter steps:
+You can preview the production build with `npm run preview`.
 
-```svelte
-<script>
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  let value = 7.5;
-  const config = {
-    readonly: false,
-    minVal: 0,
-    maxVal: 10,
-    step: 0.25,
-    numOfStars: 10,
-    starConfig: { size: 18, filledColor: '#4f46e5', unfilledColor: '#e5e7eb' }
-  };
-</script>
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
-<StarRating bind:value {config} />
+## Publishing
+
+Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+
+To publish your library to [npm](https://www.npmjs.com):
+
+```sh
+npm publish
 ```
-
-[//]: # ()
-
-[//]: # (## Development)
-
-[//]: # ()
-
-[//]: # (Run the demo app locally:)
-
-[//]: # (- Dev server: `npm run dev`)
-
-[//]: # (- Type-check: `npm run check`)
-
-[//]: # (- Build library + types: `npm run build`)
-
-[//]: # (- Preview build: `npm run preview`)
-
-[//]: # ()
-
-[//]: # (The distributable files are emitted to dist/.)
-
-## Notes
-
-- This package uses named export:
-  ```ts
-  import { StarRating } from '@dev-ekkx/svelte-star-rating';
-  ```
-- Requires Svelte 5 (uses $bindable/$state in the demo and bind:value in the component).
-- Works in SSR environments as it is purely presentational and eventless, but interaction (range input) is client-only.
-
-## License
-
-MIT License © 2025 Dev Ekkx. See LICENSE file for details.
