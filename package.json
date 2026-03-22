@@ -1,7 +1,7 @@
 {
-	"name": "@dev-ekkx/svelte-star-rating",
+	"name": "@devekkx/svelte-star-rating",
 	"description": "Simple star rating component for Svelte",
-	"author": "Dev Ekkx <devekkx@gmail.com>",
+	"author": "Emmanuel Komla Kpendo <devekkx@gmail.com>",
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
