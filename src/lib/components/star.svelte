@@ -49,7 +49,7 @@
 			stroke-width="10"
 			stroke-linejoin="miter"
 			stroke-miterlimit="10"
-			paint-order="stroke fill"
+			paint-order="fill stroke"
 		/>
 	</g>
 </svg>
